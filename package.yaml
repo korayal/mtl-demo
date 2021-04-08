@@ -50,11 +50,13 @@ library:
     - base
     - exceptions
     - monad-control
+    - monad-logger
     - mtl
     - persistent
     - persistent-sqlite
     - persistent-template
     - relude
+    - resourcet
     - snap-core
     - text
     - transformers

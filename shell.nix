@@ -20,11 +20,13 @@ let
 
     exceptions
     monad-control
+    monad-logger
     mtl
     persistent
     persistent-sqlite
     persistent-template
     relude
+    resourcet
     snap-core
     snap-server
     text

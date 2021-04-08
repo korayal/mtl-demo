@@ -4,6 +4,8 @@ module Hede where
 
 import qualified Control.Monad.Base as Base
 import Control.Monad.Trans.Control
+import Control.Monad.Trans.Resource
+import Control.Monad.Logger
 import Relude
 import qualified Snap.Core as Snap
 import UnliftIO
@@ -14,6 +16,12 @@ class Monad m => MonadHede m where
   doHede :: ByteString -> m ()
 
 instance (MonadHede m) => MonadHede (ReaderT e m) where
+  doHede t = lift (doHede t)
+
+instance (MonadHede m) => MonadHede (NoLoggingT m) where
+  doHede t = lift (doHede t)
+
+instance (MonadHede m) => MonadHede (ResourceT m) where
   doHede t = lift (doHede t)
 
 ------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ import qualified Database.Persist.Sqlite as P
 import Hede
 import Relude
 import Snap.Core
+import UnliftIO
 
 routes :: MonadSnap m => m ()
 routes = route
@@ -12,7 +13,7 @@ routes = route
     ("real", runRealHedeT routes')
   ]
 
-routes' :: (MonadSnap m, MonadHede m) => m ()
+routes' :: (MonadSnap m, MonadHede m, MonadUnliftIO m) => m ()
 routes' = route
   [ ("hoba", method GET hedeH),
     ("hobadb", method GET deeperHedeH)
@@ -23,14 +24,13 @@ hedeH = do
   doHede "early"
   writeBS "hoba"
 
-deeperHedeH :: (MonadSnap m, MonadHede m) => m ()
+deeperHedeH :: (MonadSnap m, MonadHede m, MonadUnliftIO m) => m ()
 deeperHedeH = do
-  void . liftIO . P.runSqlite ":memory:" $ do
+  _ <- P.runSqlite ":memory:" $ do
     P.runMigration DB.migrateAll
     P.insert (Hede "hede1")
 
-    -- can't run `doHede` here
-    -- doHede "done!"
+    doHede "done!"
 
     putStrLn "done some DB action"
 

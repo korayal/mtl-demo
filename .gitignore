@@ -1,0 +1,11 @@
+dist/
+dist-newstyle/
+.ghc.environment.*
+cabal.project.local
+_build
+*.cabal
+.envrc
+.direnv/
+*.hi
+*.o
+logs/*
